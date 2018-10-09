@@ -9,7 +9,7 @@ class Star:
         self.ycoord = ycoord
         self.side_of_screen = side_of_screen
         self.turtle = turtle
-    
+
     def draw(self):
         xcoord = 200
         if self.side_of_screen == "left":
@@ -46,11 +46,11 @@ class Rocket:
     INIT_LENGTH = 200
     CIRCLE_CORDS = (10.66, -30)
     RADIUS = 19
-    
+
     def __init__(self, turtle, color):
         self.turtle = turtle
         self.color = color
-    
+
     #draws the porthole window
     def draw_porthole(self):
 
@@ -170,12 +170,36 @@ class Rocket:
 
         self.turtle.hideturtle()
 
+class Planet:
+    # CIRCLE_CORDS = (100, 100)
+    # RADIUS = 30
+
+    def __init__(self, turtle, color, radius, circle_cords):
+        self.turtle = turtle
+        self.color = color
+        self.radius = radius
+        self.circle_cords = circle_cords
+
+    def draw_outline(self):
+
+        #make the fill and change the starting position of the turtle
+        self.turtle.penup()
+        self.turtle.setposition(self.circle_cords)
+        self.turtle.pendown()
+
+        self.turtle.fillcolor(self.color)
+        self.turtle.begin_fill()
+
+        #draw the circle
+        self.turtle.circle(self.radius)
+        self.turtle.end_fill()
+
 
 #endregion
 
 def main():
     #TODO: let user pick bg color
-    BGCOLOR = (72, 61, 139)
+    BGCOLOR = (53, 74, 95)
 
     wn = turtle.Screen()
     wn.setup(575, 800)
@@ -193,6 +217,33 @@ def main():
     #TODO: simply star draw function
     star = Star(artist, random.randrange(8, 20), (random.randrange(256), random.randrange(256), random.randrange(256)), 200, side_of_screen)
     star.draw()
+
+    mercury = Planet(artist, "light gray", 5, (150, 250))
+    mercury.draw_outline()
+
+    venus = Planet(artist, "tan", 7, (150, 200))
+    venus.draw_outline()
+
+    earth = Planet(artist, "green", 15, (150,125))
+    earth.draw_outline()
+
+    mars = Planet(artist, "red", 10, (150, 55))
+    mars.draw_outline()
+
+    jupiter = Planet(artist, "dark orange", 30, (150, -30))
+    jupiter.draw_outline()
+
+    saturn = Planet(artist, "lemon chiffon", 25, (150, -100))
+    saturn.draw_outline()
+
+    uranus = Planet(artist, "light blue", 10, (150, -175))
+    uranus.draw_outline()
+
+    neptune = Planet(artist, "blue", 7, (150, -250))
+    neptune.draw_outline()
+
+    pluto = Planet(artist, "rosy brown", 3, (150, -300))
+    pluto.draw_outline()
 
     input()
 

@@ -2,14 +2,52 @@ import turtle
 import random
 
 #region classes
+class Ground:
+    def __init__(self, turtle, color, screen_width, screen_height, height):
+        self.turtle = turtle
+        self.color = color
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.height = height
+
+    def draw(self):
+        self.turtle.penup()
+        print("creating ground at ", -1 * (self.screen_width/2), -1 * (self.screen_height/2), "hieght of", self.height)
+        self.turtle.setposition(-1 * (self.screen_width/2), -1 * (self.screen_height/2))
+        self.turtle.pendown()
+        self.turtle.fillcolor(self.color)
+        self.turtle.begin_fill()
+        self.turtle.forward(self.screen_width)
+        self.turtle.setheading(90)
+        self.turtle.forward(self.height)
+        self.turtle.setheading(180)
+        self.turtle.forward(self.screen_width)
+        self.turtle.setheading(270)
+        self.turtle.forward(self.height)
+        self.turtle.end_fill()
+        self.turtle.penup()
+
 class Star:
-    def __init__(self, turtle, size, color, ycoord, side_of_screen):
-        self.size = size
+    def __init__(self, turtle, size_type, color, ycoord, side_of_screen):
+        self.size_type = size_type
         self.color = color
         self.ycoord = ycoord
         self.side_of_screen = side_of_screen
         self.turtle = turtle
-    
+        if size_type.lower() == "random":
+            self.size = random.randrange(5, 25)
+        elif size_type.lower() == "small":
+            self.size = 7
+        elif size_type.lower() == "medium":
+            self.size = 12
+        else:
+            self.size = 20
+        
+        if color.lower() == "random":
+            self.color = (random.randrange(256), random.randrange(256), random.randrange(256))
+        else:
+            self.color = color
+
     def draw(self):
         xcoord = 200
         if self.side_of_screen == "left":
@@ -175,25 +213,35 @@ class Rocket:
 
 def main():
     #TODO: let user pick bg color
-    BGCOLOR = (72, 61, 139)
+    SCREEN_WIDTH = 1000
+    SCREEN_HEIGHT = 700
+    DRAW_SPEED = 100
+    GREEN = (0, 255, 0)
+    DARK_GREEN = (0, 102, 0) 
+    BLACK = (0, 0, 0)
 
-    wn = turtle.Screen()
-    wn.setup(575, 800)
-    wn.colormode(255)
-    wn.bgcolor(BGCOLOR)
+    screen = turtle.Screen()
+    screen.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
+    screen.colormode(255)
+    screen.bgcolor(BLACK)
 
     artist = turtle.Turtle()
-    artist.speed(10)
+    artist.speed(DRAW_SPEED)
 
-    #TODO: let user decide where rocket goes, left, right middle, high, low
+    ground = Ground(artist, DARK_GREEN, SCREEN_WIDTH, SCREEN_HEIGHT, 225)
+    ground.draw()
+
+    #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
     rocket = Rocket(artist, "white")
     rocket.draw()
 
-    side_of_screen = "left" #input("What direction should the star go?")
-    #TODO: simply star draw function
-    star = Star(artist, random.randrange(8, 20), (random.randrange(256), random.randrange(256), random.randrange(256)), 200, side_of_screen)
+    #TODO: simple star draw function
+    star = Star(artist, "random", "random", 200, "left")
+    star.draw()
+    star = Star(artist, "random", "white", 200, "right")
     star.draw()
 
+    #screen.exitonclick()
     input()
 
 if __name__ == "__main__":

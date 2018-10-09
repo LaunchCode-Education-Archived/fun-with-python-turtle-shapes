@@ -2,12 +2,8 @@ import turtle
 import random
 
 #region global variables
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 700
 DRAW_SPEED = 100
-GREEN = (0, 255, 0)
 DARK_GREEN = (0, 102, 0) 
-BLACK = (0, 0, 0)
 #endregion
 
 #region classes
@@ -37,34 +33,30 @@ class Ground:
         self.turtle.penup()
 
 class Star:
-    def __init__(self, turtle, size_type, color, level_of_screen, side_of_screen):
-        self.size_type = size_type
-        self.color = color
-        
-        self.side_of_screen = side_of_screen
+    def __init__(self, turtle, size, color, height, side):
         self.turtle = turtle
         # determine size
-        if size_type.lower() == "random":
+        if size.lower() == "random":
             self.size = random.randrange(5, 25)
-        elif size_type.lower() == "small":
+        elif size.lower() == "small":
             self.size = 7
-        elif size_type.lower() == "medium":
+        elif size.lower() == "medium":
             self.size = 12
         else:
             self.size = 20
 
         # determine y location (high, medium, low)
-        if level_of_screen.lower() == "high":
+        if height.lower() == "high":
             self.ycoord = random.randrange(225, 340)
-        elif level_of_screen.lower() == "medium":
+        elif height.lower() == "medium":
             self.ycoord = random.randrange(125, 225)
         else:
             self.ycoord = random.randrange(10, 125)
 
         # determine x location (left, middle, right)
-        if side_of_screen.lower() == "left":
+        if side.lower() == "left":
             self.xcoord = random.randrange(-500, -250)
-        elif side_of_screen.lower() == "rigth":
+        elif side.lower() == "rigth":
             self.xcoord = random.randrange(250, 500)
         else:
             self.xcoord = random.randrange(-250, 250)
@@ -95,7 +87,6 @@ class Star:
         self.turtle.end_fill()
 
 class Rocket:
-    #final variables
     PXCORD = 58.4743409445
     NXCORD = -58.4743409445
     YCORD = -33.7390488074
@@ -235,34 +226,33 @@ class Rocket:
 #endregion
 
 #region functions
-def setup_screen(color):
+def setup_screen(color, screen_width, screen_height):
     screen = turtle.Screen()
-    screen.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
+    screen.setup(screen_width, screen_height)
     screen.colormode(255)
     screen.bgcolor(color)
-    return screen
 #endregion
 
 def main():
-    setup_screen(BLACK);
+    setup_screen(color="black", screen_width=1000, screen_height=700)
 
     artist = turtle.Turtle()
     artist.speed(DRAW_SPEED)
 
-    ground = Ground(artist, DARK_GREEN, SCREEN_WIDTH, SCREEN_HEIGHT, 225)
+    ground = Ground(turtle=artist, color=DARK_GREEN, screen_width=1000, screen_height=700, height=225)
     ground.draw()
 
     #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
     rocket = Rocket(artist, "white")
     rocket.draw()
 
-    star = Star(artist, "large", "white", "low", "left")
+    star = Star(turtle=artist, size="large", color="white", height="low", side="left")
     star.draw()
-    star2 = Star(artist, "small", "white", "high", "right")
+    star2 = Star(turtle=artist, size="small", color="white", height="high", side="right")
     star2.draw()
-    star3 = Star(artist, "medium", "random", "medium", "middle")
+    star3 = Star(turtle=artist, size="medium", color="random", height="medium", side="middle")
     star3.draw()
-    star4 = Star(artist, "random", "random", "medium", "middle")
+    star4 = Star(turtle=artist, size="random", color="random", height="medium", side="middle")
     star4.draw()
 
     #screen.exitonclick()

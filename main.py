@@ -28,12 +28,13 @@ class Ground:
         self.turtle.penup()
 
 class Star:
-    def __init__(self, turtle, size_type, color, ycoord, side_of_screen):
+    def __init__(self, turtle, size_type, color, level_of_screen, side_of_screen):
         self.size_type = size_type
         self.color = color
-        self.ycoord = ycoord
+        
         self.side_of_screen = side_of_screen
         self.turtle = turtle
+        # determine size
         if size_type.lower() == "random":
             self.size = random.randrange(5, 25)
         elif size_type.lower() == "small":
@@ -42,20 +43,33 @@ class Star:
             self.size = 12
         else:
             self.size = 20
-        
+
+        # determine y location (high, medium, low)
+        if level_of_screen.lower() == "high":
+            self.ycoord = random.randrange(225, 340)
+        elif level_of_screen.lower() == "medium":
+            self.ycoord = random.randrange(125, 225)
+        else:
+            self.ycoord = random.randrange(10, 125)
+
+        # determine x location (left, middle, right)
+        if side_of_screen.lower() == "left":
+            self.xcoord = random.randrange(-500, -250)
+        elif side_of_screen.lower() == "rigth":
+            self.xcoord = random.randrange(250, 500)
+        else:
+            self.xcoord = random.randrange(-250, 250)
+
+        # determine color
         if color.lower() == "random":
             self.color = (random.randrange(256), random.randrange(256), random.randrange(256))
         else:
             self.color = color
 
     def draw(self):
-        xcoord = 200
-        if self.side_of_screen == "left":
-            xcoord = -200
-
         #pick up the pen and place it
         self.turtle.penup()
-        self.turtle.setposition(xcoord, self.ycoord)
+        self.turtle.setposition(self.xcoord, self.ycoord)
         self.turtle.pendown()
 
         #start the drawing
@@ -232,14 +246,17 @@ def main():
     ground.draw()
 
     #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
-    rocket = Rocket(artist, "white")
-    rocket.draw()
+    #rocket = Rocket(artist, "white")
+    #rocket.draw()
 
-    #TODO: simple star draw function
-    star = Star(artist, "random", "random", 200, "left")
+    star = Star(artist, "large", "white", "low", "left")
     star.draw()
-    star = Star(artist, "random", "white", 200, "right")
-    star.draw()
+    star2 = Star(artist, "small", "white", "high", "right")
+    star2.draw()
+    star3 = Star(artist, "medium", "random", "medium", "middle")
+    star3.draw()
+    star4 = Star(artist, "random", "random", "medium", "middle")
+    star4.draw()
 
     #screen.exitonclick()
     input()

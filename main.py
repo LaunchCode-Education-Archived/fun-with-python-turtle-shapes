@@ -1,6 +1,15 @@
 import turtle
 import random
 
+#region global variables
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 700
+DRAW_SPEED = 100
+GREEN = (0, 255, 0)
+DARK_GREEN = (0, 102, 0) 
+BLACK = (0, 0, 0)
+#endregion
+
 #region classes
 class Ground:
     def __init__(self, turtle, color, screen_width, screen_height, height):
@@ -225,19 +234,17 @@ class Rocket:
 
 #endregion
 
-def main():
-    #TODO: let user pick bg color
-    SCREEN_WIDTH = 1000
-    SCREEN_HEIGHT = 700
-    DRAW_SPEED = 100
-    GREEN = (0, 255, 0)
-    DARK_GREEN = (0, 102, 0) 
-    BLACK = (0, 0, 0)
-
+#region functions
+def setup_screen(color):
     screen = turtle.Screen()
     screen.setup(SCREEN_WIDTH, SCREEN_HEIGHT)
     screen.colormode(255)
-    screen.bgcolor(BLACK)
+    screen.bgcolor(color)
+    return screen
+#endregion
+
+def main():
+    setup_screen(BLACK);
 
     artist = turtle.Turtle()
     artist.speed(DRAW_SPEED)
@@ -246,8 +253,8 @@ def main():
     ground.draw()
 
     #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
-    #rocket = Rocket(artist, "white")
-    #rocket.draw()
+    rocket = Rocket(artist, "white")
+    rocket.draw()
 
     star = Star(artist, "large", "white", "low", "left")
     star.draw()

@@ -103,9 +103,10 @@ class Rocket:
     CIRCLE_CORDS = (10.66, -30)
     RADIUS = 19
 
-    def __init__(self, turtle, color):
+    def __init__(self, turtle, border_color, inner_color):
         self.turtle = turtle
-        self.color = color
+        self.border_color = border_color
+        self.inner_color = inner_color
 
     #draws the porthole window
     def draw_porthole(self):
@@ -129,13 +130,13 @@ class Rocket:
     # draw_init draw the initial outline
     def draw(self):
 
-        self.turtle.pencolor(self.color)
+        self.turtle.pencolor(self.border_color)
         self.turtle.pensize(12)
         self.turtle.penup()
         self.turtle.setposition(0, -225)
         self.turtle.setheading(90)
         self.turtle.pendown()
-        self.turtle.fillcolor(244, 119, 83)
+        self.turtle.fillcolor(self.inner_color)
         self.turtle.begin_fill()
 
         # begin drawing
@@ -193,7 +194,7 @@ class Rocket:
     def draw_flame(self):
 
         # specify color and width
-        self.turtle.pencolor(self.color)
+        self.turtle.pencolor(self.border_color)
         self.turtle.pensize(12)
 
         # set the position
@@ -206,7 +207,7 @@ class Rocket:
 
         # begin the fill and set the fill color
         self.turtle.begin_fill()
-        self.turtle.fillcolor(self.color)
+        self.turtle.fillcolor(self.inner_color)
 
         self.turtle.forward(65)
 
@@ -365,7 +366,7 @@ def main():
     crazy_triangles(artist, 4)
 
     #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
-    rocket = Rocket(artist, "white")
+    rocket = Rocket(artist, border_color="white", inner_color=random_color())
     rocket.draw()
 
     #stars

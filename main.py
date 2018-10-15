@@ -3,7 +3,8 @@ import random
 
 #region global variables
 DRAW_SPEED = 100
-DARK_GREEN = (0, 102, 0) 
+DARK_GREEN = (0, 102, 0)
+DEFAULT_PEN_SIZE = 1
 #endregion
 
 #region classes
@@ -16,6 +17,7 @@ class Ground:
         self.height = height
 
     def draw(self):
+        self.turtle.pensize(DEFAULT_PEN_SIZE)
         self.turtle.penup()
         print("creating ground at ", -1 * (self.screen_width/2), -1 * (self.screen_height/2), "hieght of", self.height)
         self.turtle.setposition(-1 * (self.screen_width/2), -1 * (self.screen_height/2))
@@ -69,6 +71,7 @@ class Star:
 
     def draw(self):
         #pick up the pen and place it
+        self.turtle.pensize(DEFAULT_PEN_SIZE)
         self.turtle.penup()
         self.turtle.setposition(self.xcoord, self.ycoord)
         self.turtle.pendown()
@@ -98,11 +101,11 @@ class Rocket:
     INIT_LENGTH = 200
     CIRCLE_CORDS = (10.66, -30)
     RADIUS = 19
-    
+
     def __init__(self, turtle, color):
         self.turtle = turtle
         self.color = color
-    
+
     #draws the porthole window
     def draw_porthole(self):
 
@@ -110,13 +113,15 @@ class Rocket:
         self.turtle.penup()
         self.turtle.setposition(self.CIRCLE_CORDS)
         self.turtle.pendown()
+        self.turtle.fillcolor(53, 74, 95)
+        self.turtle.begin_fill()
 
         #draw the circle
         self.turtle.circle(self.RADIUS)
         self.turtle.end_fill()
 
     def draw_curve(self, turtle, angle, dist):
-        for i in range(62):
+        for i in range(63):
             turtle.forward(dist)
             turtle.right(angle)
 
@@ -124,17 +129,19 @@ class Rocket:
     def draw(self):
 
         self.turtle.pencolor(self.color)
-        self.turtle.width(12)
+        self.turtle.pensize(12)
         self.turtle.penup()
         self.turtle.setposition(0, -225)
         self.turtle.setheading(90)
         self.turtle.pendown()
+        self.turtle.fillcolor(244, 119, 83)
+        self.turtle.begin_fill()
 
         # begin drawing
         self.turtle.right(self.PANGLE)
         self.turtle.forward(self.INIT_LENGTH)
 
-        #draw the right fin
+        # draw the right fin
         self.turtle.setheading(0)
         self.turtle.right(55)
         self.turtle.forward(45)
@@ -144,16 +151,22 @@ class Rocket:
         self.turtle.forward(40)
 
         self.turtle.penup()
+        # self.turtle.end_fill()
         self.turtle.setposition(self.PXCORD, self.YCORD)
         self.turtle.setheading(90)
         self.turtle.pendown()
+        # self.turtle.fillcolor("orange")
+        # self.turtle.begin_fill()
         self.draw_curve(self.turtle, self.NCURVE, self.DIST)
+        # self.turtle.end_fill()
 
         # draw the other half of the flame
         self.turtle.penup()
         self.turtle.setposition(0, -225)
         self.turtle.setheading(90)
         self.turtle.pendown()
+        # self.turtle.fillcolor(92,148,206)
+        # self.turtle.begin_fill()
 
         # begin drawing
         self.turtle.right(self.NANGLE)
@@ -170,20 +183,30 @@ class Rocket:
 
         # draw the left curve
         self.turtle.penup()
+        # self.turtle.end_fill()
+        # self.turtle.fillcolor("orange")
+        # self.turtle.begin_fill()
         self.turtle.setposition(self.NXCORD, self.YCORD)
         self.turtle.setheading(90)
         self.turtle.pendown()
 
         self.draw_curve(self.turtle, self.PCURVE, self.DIST)
+        self.turtle.end_fill()
         self.draw_porthole()
+
+        # self.turtle.fillcolor("orange")
+        # self.turtle.begin_fill()
+
         self.draw_flame()
+
+        # self.turtle.end_fill()
 
     # draw_flame
     def draw_flame(self):
 
         # specify color and width
         self.turtle.pencolor(self.color)
-        self.turtle.width(12)
+        self.turtle.pensize(12)
 
         # set the position
         self.turtle.penup()
@@ -199,7 +222,7 @@ class Rocket:
 
         self.turtle.forward(65)
 
-        self.turtle.width(1)
+        self.turtle.pensize(12)
         self.turtle.setheading(270)
         self.turtle.penup()
         self.turtle.setposition(15, -115)
@@ -222,8 +245,34 @@ class Rocket:
 
         self.turtle.hideturtle()
 
+class Planet:
+    # CIRCLE_CORDS = (100, 100)
+    # RADIUS = 30
+
+    def __init__(self, turtle, color, radius, coordinates):
+        self.turtle = turtle
+        self.color = color
+        self.radius = radius
+        self.coordinates = coordinates
+
+    def draw(self):
+
+        #make the fill and change the starting position of the turtle
+        self.turtle.pensize(DEFAULT_PEN_SIZE)
+        self.turtle.penup()
+        self.turtle.setposition(self.coordinates)
+        self.turtle.pendown()
+
+        self.turtle.fillcolor(self.color)
+        self.turtle.begin_fill()
+
+        #draw the circle
+        self.turtle.circle(self.radius)
+        self.turtle.end_fill()
+
 
 #endregion
+
 
 #region functions
 def setup_screen(color, screen_width, screen_height):
@@ -254,6 +303,33 @@ def main():
     star3.draw()
     star4 = Star(turtle=artist, size="random", color="random", height="medium", side="middle")
     star4.draw()
+
+    mercury = Planet(turtle=artist, color="light gray", radius=5, coordinates=(150, 250))
+    mercury.draw()
+    
+    venus = Planet(turtle=artist, color="tan", radius=7, coordinates=(150, 200))
+    venus.draw()
+    
+    earth = Planet(turtle=artist, color="green", radius=15, coordinates=(150,125))
+    earth.draw()
+    
+    mars = Planet(turtle=artist, color="red", radius=10, coordinates=(150, 55))
+    mars.draw()
+    
+    jupiter = Planet(turtle=artist, color="dark orange", radius=30, coordinates=(150, -30))
+    jupiter.draw()
+    
+    saturn = Planet(turtle=artist, color="lemon chiffon", radius=25, coordinates=(150, -100))
+    saturn.draw()
+    
+    uranus = Planet(turtle=artist, color="light blue", radius=10, coordinates=(150, -175))
+    uranus.draw()
+    
+    neptune = Planet(turtle=artist, color="blue", radius=7, coordinates=(150, -250))
+    neptune.draw()
+    
+    pluto = Planet(turtle=artist, color="rosy brown", radius=3, coordinates=(150, -300))
+    pluto.draw()
 
     #screen.exitonclick()
     input()

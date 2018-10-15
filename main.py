@@ -1,10 +1,10 @@
 import turtle
 import random
 import math
+import time
 
 #region global variables
 DRAW_SPEED = 100
-DARK_GREEN = (0, 102, 0)
 DEFAULT_PEN_SIZE = 1
 #endregion
 
@@ -38,6 +38,7 @@ class Ground:
 class Star:
     def __init__(self, turtle, size, color, height, side):
         self.turtle = turtle
+        self.turtle.speed(DRAW_SPEED)
         # determine size
         if size.lower() == "random":
             self.size = random.randrange(5, 25)
@@ -105,6 +106,7 @@ class Rocket:
 
     def __init__(self, turtle, border_color, inner_color):
         self.turtle = turtle
+        self.turtle.speed(DRAW_SPEED)
         self.border_color = border_color
         self.inner_color = inner_color
 
@@ -240,6 +242,7 @@ class Planet:
 
     def __init__(self, turtle, color, radius, coordinates):
         self.turtle = turtle
+        self.turtle.speed(DRAW_SPEED)
         self.color = color
         self.radius = radius
         self.coordinates = coordinates
@@ -264,6 +267,58 @@ class Planet:
 
 
 #region functions
+def creative_mode(turtle):
+    print("SO CREATIVE")
+
+def demo_mode(turtle):
+
+    while 1 == 1:
+        crazy_triangles(turtle, 4)
+
+        #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
+        rocket = Rocket(turtle, border_color="white", inner_color=random_color())
+        rocket.draw()
+
+        #stars
+        star = Star(turtle=turtle, size="large", color="white", height="low", side="left")
+        star.draw()
+        star2 = Star(turtle=turtle, size="small", color="white", height="high", side="right")
+        star2.draw()
+        star3 = Star(turtle=turtle, size="medium", color="random", height="medium", side="middle")
+        star3.draw()
+        star4 = Star(turtle=turtle, size="random", color="random", height="medium", side="middle")
+        star4.draw()
+
+        #planets
+        mercury = Planet(turtle=turtle, color="light gray", radius=5, coordinates=(150, 250))
+        mercury.draw()
+        
+        venus = Planet(turtle=turtle, color="tan", radius=7, coordinates=(150, 200))
+        venus.draw()
+        
+        earth = Planet(turtle=turtle, color="green", radius=15, coordinates=(150,125))
+        earth.draw()
+        
+        mars = Planet(turtle=turtle, color="red", radius=10, coordinates=(150, 55))
+        mars.draw()
+        
+        jupiter = Planet(turtle=turtle, color="dark orange", radius=30, coordinates=(150, -30))
+        jupiter.draw()
+        
+        saturn = Planet(turtle=turtle, color="lemon chiffon", radius=25, coordinates=(150, -100))
+        saturn.draw()
+        
+        uranus = Planet(turtle=turtle, color="light blue", radius=10, coordinates=(150, -175))
+        uranus.draw()
+        
+        neptune = Planet(turtle=turtle, color="blue", radius=7, coordinates=(150, -250))
+        neptune.draw()
+        
+        pluto = Planet(turtle=turtle, color="rosy brown", radius=3, coordinates=(150, -300))
+        pluto.draw()
+
+        time.sleep(20)
+
 def setup_screen(color, screen_width, screen_height):
     screen = turtle.Screen()
     screen.setup(screen_width, screen_height)
@@ -352,6 +407,10 @@ def crazy_triangles(t, num_of_triangles, speed='Random', pensize='Random', penco
             t.speed(random.randint(0, 10))
         draw_triangle(t, num_a, num_b, num_c, rand_pos, random_color())
 
+
+
+
+
 #endregion
 
 def main():
@@ -360,54 +419,21 @@ def main():
     artist = turtle.Turtle()
     artist.speed(DRAW_SPEED)
 
-    ground = Ground(turtle=artist, color=DARK_GREEN, screen_width=1000, screen_height=700, height=225)
+    ground = Ground(turtle=artist, color="dark green", screen_width=1000, screen_height=700, height=225)
     ground.draw()
 
-    crazy_triangles(artist, 4)
+    print("Hello, this program can program has two modes:")
+    print("\t 1) create")
+    print("\t 2) demo")
 
-    #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
-    rocket = Rocket(artist, border_color="white", inner_color=random_color())
-    rocket.draw()
+    mode = input("Enter mode: ")
 
-    #stars
-    star = Star(turtle=artist, size="large", color="white", height="low", side="left")
-    star.draw()
-    star2 = Star(turtle=artist, size="small", color="white", height="high", side="right")
-    star2.draw()
-    star3 = Star(turtle=artist, size="medium", color="random", height="medium", side="middle")
-    star3.draw()
-    star4 = Star(turtle=artist, size="random", color="random", height="medium", side="middle")
-    star4.draw()
+    if mode == "1" or mode.lower() == "demo":
+        demo_mode(turtle=artist)    
+    else:
+        creative_mode(turtle=artist)
 
-    #planets
-    mercury = Planet(turtle=artist, color="light gray", radius=5, coordinates=(150, 250))
-    mercury.draw()
-    
-    venus = Planet(turtle=artist, color="tan", radius=7, coordinates=(150, 200))
-    venus.draw()
-    
-    earth = Planet(turtle=artist, color="green", radius=15, coordinates=(150,125))
-    earth.draw()
-    
-    mars = Planet(turtle=artist, color="red", radius=10, coordinates=(150, 55))
-    mars.draw()
-    
-    jupiter = Planet(turtle=artist, color="dark orange", radius=30, coordinates=(150, -30))
-    jupiter.draw()
-    
-    saturn = Planet(turtle=artist, color="lemon chiffon", radius=25, coordinates=(150, -100))
-    saturn.draw()
-    
-    uranus = Planet(turtle=artist, color="light blue", radius=10, coordinates=(150, -175))
-    uranus.draw()
-    
-    neptune = Planet(turtle=artist, color="blue", radius=7, coordinates=(150, -250))
-    neptune.draw()
-    
-    pluto = Planet(turtle=artist, color="rosy brown", radius=3, coordinates=(150, -300))
-    pluto.draw()
-
-    input()
+    input('Press enter to exit:')
 
 if __name__ == "__main__":
     # execute only if run as a script

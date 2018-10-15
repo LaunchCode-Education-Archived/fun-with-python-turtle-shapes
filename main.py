@@ -1,5 +1,6 @@
 import turtle
 import random
+import math
 
 #region global variables
 DRAW_SPEED = 100
@@ -155,18 +156,13 @@ class Rocket:
         self.turtle.setposition(self.PXCORD, self.YCORD)
         self.turtle.setheading(90)
         self.turtle.pendown()
-        # self.turtle.fillcolor("orange")
-        # self.turtle.begin_fill()
         self.draw_curve(self.turtle, self.NCURVE, self.DIST)
-        # self.turtle.end_fill()
 
         # draw the other half of the flame
         self.turtle.penup()
         self.turtle.setposition(0, -225)
         self.turtle.setheading(90)
         self.turtle.pendown()
-        # self.turtle.fillcolor(92,148,206)
-        # self.turtle.begin_fill()
 
         # begin drawing
         self.turtle.right(self.NANGLE)
@@ -183,9 +179,6 @@ class Rocket:
 
         # draw the left curve
         self.turtle.penup()
-        # self.turtle.end_fill()
-        # self.turtle.fillcolor("orange")
-        # self.turtle.begin_fill()
         self.turtle.setposition(self.NXCORD, self.YCORD)
         self.turtle.setheading(90)
         self.turtle.pendown()
@@ -194,14 +187,9 @@ class Rocket:
         self.turtle.end_fill()
         self.draw_porthole()
 
-        # self.turtle.fillcolor("orange")
-        # self.turtle.begin_fill()
-
         self.draw_flame()
 
-        # self.turtle.end_fill()
 
-    # draw_flame
     def draw_flame(self):
 
         # specify color and width
@@ -280,6 +268,89 @@ def setup_screen(color, screen_width, screen_height):
     screen.setup(screen_width, screen_height)
     screen.colormode(255)
     screen.bgcolor(color)
+
+def random_color():
+    random_rgb = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    #print(random_rgb)
+    return random_rgb
+
+def move(t, position, speed=10):
+    #t.speed(speed)
+    t.penup()
+    t.setpos(position)
+    t.pendown()
+
+def draw_rectangle(t, length, height, position):
+    move(t, position)
+    for i in range(4):
+        if i % 2 == 0:
+            t.forward(height)
+            t.right(90)
+        else:
+            t.forward(length)
+            t.right(90)
+
+def draw_square(t, length, position):
+    draw_rectangle(t, length, length, position)
+
+def draw_triangle(t, length_a, length_b, length_c, position, color=None):
+    '''
+    angle_a = arccos(((b^2) + (c^2) - (a^2))) / (2 * b * c))
+    '''
+    length_a = float(length_a)
+    length_b = float(length_b)
+    length_c = float(length_c)
+    if color != None:
+        t.fillcolor(color)
+    else:
+        t.fillcolor('white')
+
+    print("A: {} B: {} C: {}".format(length_a, length_b, length_c))
+    num = float((length_b * length_b) + (length_c * length_c) - (length_a ** 2))
+    denom = float(2 * length_b * length_c)
+    print("Numerator: {} Denomerator: {}".format(num, denom))
+    angle_a = math.degrees(math.acos(num / denom))
+    print("Angle A: {}".format(angle_a))
+    num = (length_c * length_c) + (length_a * length_a) - (length_b ** 2)
+    denom = 2 * length_c * length_a
+    angle_b = math.degrees(math.acos(num / denom))
+    print("Angle B: {}".format(angle_b))
+    angle_c = 180 - angle_a - angle_b
+    print("Angle C: {}".format(angle_c))
+    move(t, position)
+    t.begin_fill()
+    t.forward(length_a)
+    t.right(angle_a + angle_b)
+    t.forward(length_b)
+    t.right(angle_b + angle_c)
+    t.forward(length_c)
+    t.end_fill()
+    #t.right
+
+def crazy_triangles(t, num_of_triangles, speed='Random', pensize='Random', pencolor='Random'):
+    if speed != 'Random':
+        t.speed(speed)
+    if pensize != 'Random':
+        t.pensize(pensize)
+    if pencolor != 'Random':
+        t.pencolor(pencolor)
+    for i in range(num_of_triangles):
+        print("{}/{} triangles drawn".format(i+1, num_of_triangles))
+        if pensize == 'Random':
+            t.pensize(random.randint(0,10))
+        if pencolor == 'Random':
+            t.pencolor(random_color())
+        num_a = float(random.randint(50, 100))
+        num_b = float(random.randint(50, 100))
+        num_c = float(random.randint(50, 100))
+        #max_x, max_y = turtle.screensize()
+        max_x = 300
+        max_y = 300
+        rand_pos = (random.randint((max_x * -1), max_x), random.randint((max_y * -1), max_y))
+        if speed=='Random':
+            t.speed(random.randint(0, 10))
+        draw_triangle(t, num_a, num_b, num_c, rand_pos, random_color())
+
 #endregion
 
 def main():
@@ -291,10 +362,13 @@ def main():
     ground = Ground(turtle=artist, color=DARK_GREEN, screen_width=1000, screen_height=700, height=225)
     ground.draw()
 
+    crazy_triangles(artist, 4)
+
     #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
     rocket = Rocket(artist, "white")
     rocket.draw()
 
+    #stars
     star = Star(turtle=artist, size="large", color="white", height="low", side="left")
     star.draw()
     star2 = Star(turtle=artist, size="small", color="white", height="high", side="right")
@@ -304,6 +378,7 @@ def main():
     star4 = Star(turtle=artist, size="random", color="random", height="medium", side="middle")
     star4.draw()
 
+    #planets
     mercury = Planet(turtle=artist, color="light gray", radius=5, coordinates=(150, 250))
     mercury.draw()
     
@@ -331,7 +406,6 @@ def main():
     pluto = Planet(turtle=artist, color="rosy brown", radius=3, coordinates=(150, -300))
     pluto.draw()
 
-    #screen.exitonclick()
     input()
 
 if __name__ == "__main__":

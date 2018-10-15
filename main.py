@@ -1,23 +1,79 @@
 import turtle
 import random
 
+#region global variables
+DRAW_SPEED = 100
+DARK_GREEN = (0, 102, 0)
+DEFAULT_PEN_SIZE = 1
+#endregion
+
 #region classes
-class Star:
-    def __init__(self, turtle, size, color, ycoord, side_of_screen):
-        self.size = size
-        self.color = color
-        self.ycoord = ycoord
-        self.side_of_screen = side_of_screen
+class Ground:
+    def __init__(self, turtle, color, screen_width, screen_height, height):
         self.turtle = turtle
+        self.color = color
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.height = height
 
     def draw(self):
-        xcoord = 200
-        if self.side_of_screen == "left":
-            xcoord = -200
-
-        #pick up the pen and place it
+        self.turtle.pensize(DEFAULT_PEN_SIZE)
         self.turtle.penup()
-        self.turtle.setposition(xcoord, self.ycoord)
+        print("creating ground at ", -1 * (self.screen_width/2), -1 * (self.screen_height/2), "hieght of", self.height)
+        self.turtle.setposition(-1 * (self.screen_width/2), -1 * (self.screen_height/2))
+        self.turtle.pendown()
+        self.turtle.fillcolor(self.color)
+        self.turtle.begin_fill()
+        self.turtle.forward(self.screen_width)
+        self.turtle.setheading(90)
+        self.turtle.forward(self.height)
+        self.turtle.setheading(180)
+        self.turtle.forward(self.screen_width)
+        self.turtle.setheading(270)
+        self.turtle.forward(self.height)
+        self.turtle.end_fill()
+        self.turtle.penup()
+
+class Star:
+    def __init__(self, turtle, size, color, height, side):
+        self.turtle = turtle
+        # determine size
+        if size.lower() == "random":
+            self.size = random.randrange(5, 25)
+        elif size.lower() == "small":
+            self.size = 7
+        elif size.lower() == "medium":
+            self.size = 12
+        else:
+            self.size = 20
+
+        # determine y location (high, medium, low)
+        if height.lower() == "high":
+            self.ycoord = random.randrange(225, 340)
+        elif height.lower() == "medium":
+            self.ycoord = random.randrange(125, 225)
+        else:
+            self.ycoord = random.randrange(10, 125)
+
+        # determine x location (left, middle, right)
+        if side.lower() == "left":
+            self.xcoord = random.randrange(-500, -250)
+        elif side.lower() == "rigth":
+            self.xcoord = random.randrange(250, 500)
+        else:
+            self.xcoord = random.randrange(-250, 250)
+
+        # determine color
+        if color.lower() == "random":
+            self.color = (random.randrange(256), random.randrange(256), random.randrange(256))
+        else:
+            self.color = color
+
+    def draw(self):
+        #pick up the pen and place it
+        self.turtle.pensize(DEFAULT_PEN_SIZE)
+        self.turtle.penup()
+        self.turtle.setposition(self.xcoord, self.ycoord)
         self.turtle.pendown()
 
         #start the drawing
@@ -34,7 +90,6 @@ class Star:
         self.turtle.end_fill()
 
 class Rocket:
-    #final variables
     PXCORD = 58.4743409445
     NXCORD = -58.4743409445
     YCORD = -33.7390488074
@@ -74,7 +129,7 @@ class Rocket:
     def draw(self):
 
         self.turtle.pencolor(self.color)
-        self.turtle.width(12)
+        self.turtle.pensize(12)
         self.turtle.penup()
         self.turtle.setposition(0, -225)
         self.turtle.setheading(90)
@@ -151,7 +206,7 @@ class Rocket:
 
         # specify color and width
         self.turtle.pencolor(self.color)
-        self.turtle.width(12)
+        self.turtle.pensize(12)
 
         # set the position
         self.turtle.penup()
@@ -167,7 +222,7 @@ class Rocket:
 
         self.turtle.forward(65)
 
-        self.turtle.width(12)
+        self.turtle.pensize(12)
         self.turtle.setheading(270)
         self.turtle.penup()
         self.turtle.setposition(15, -115)
@@ -194,17 +249,18 @@ class Planet:
     # CIRCLE_CORDS = (100, 100)
     # RADIUS = 30
 
-    def __init__(self, turtle, color, radius, circle_cords):
+    def __init__(self, turtle, color, radius, coordinates):
         self.turtle = turtle
         self.color = color
         self.radius = radius
-        self.circle_cords = circle_cords
+        self.coordinates = coordinates
 
-    def draw_outline(self):
+    def draw(self):
 
         #make the fill and change the starting position of the turtle
+        self.turtle.pensize(DEFAULT_PEN_SIZE)
         self.turtle.penup()
-        self.turtle.setposition(self.circle_cords)
+        self.turtle.setposition(self.coordinates)
         self.turtle.pendown()
 
         self.turtle.fillcolor(self.color)
@@ -217,54 +273,65 @@ class Planet:
 
 #endregion
 
-def main():
-    #TODO: let user pick bg color
-    BGCOLOR = ("white")
 
-    wn = turtle.Screen()
-    wn.setup(575, 800)
-    wn.colormode(255)
-    wn.bgcolor(BGCOLOR)
+#region functions
+def setup_screen(color, screen_width, screen_height):
+    screen = turtle.Screen()
+    screen.setup(screen_width, screen_height)
+    screen.colormode(255)
+    screen.bgcolor(color)
+#endregion
+
+def main():
+    setup_screen(color="black", screen_width=1000, screen_height=700)
 
     artist = turtle.Turtle()
-    artist.speed(10)
+    artist.speed(DRAW_SPEED)
 
-    #TODO: let user decide where rocket goes, left, right middle, high, low
-    rocket = Rocket(artist, "black")
+    ground = Ground(turtle=artist, color=DARK_GREEN, screen_width=1000, screen_height=700, height=225)
+    ground.draw()
+
+    #TODO: let user decide: left, right middle, high, low, big, small, going up, going down
+    rocket = Rocket(artist, "white")
     rocket.draw()
 
-    side_of_screen = "left" #input("What direction should the star go?")
-    #TODO: simply star draw function
-    # star = Star(artist, random.randrange(8, 20), (random.randrange(256), random.randrange(256), random.randrange(256)), 200, side_of_screen)
-    # star.draw()
-    #
-    # mercury = Planet(artist, "light gray", 5, (150, 250))
-    # mercury.draw_outline()
-    #
-    # venus = Planet(artist, "tan", 7, (150, 200))
-    # venus.draw_outline()
-    #
-    # earth = Planet(artist, "green", 15, (150,125))
-    # earth.draw_outline()
-    #
-    # mars = Planet(artist, "red", 10, (150, 55))
-    # mars.draw_outline()
-    #
-    # jupiter = Planet(artist, "dark orange", 30, (150, -30))
-    # jupiter.draw_outline()
-    #
-    # saturn = Planet(artist, "lemon chiffon", 25, (150, -100))
-    # saturn.draw_outline()
-    #
-    # uranus = Planet(artist, "light blue", 10, (150, -175))
-    # uranus.draw_outline()
-    #
-    # neptune = Planet(artist, "blue", 7, (150, -250))
-    # neptune.draw_outline()
-    #
-    # pluto = Planet(artist, "rosy brown", 3, (150, -300))
-    # pluto.draw_outline()
+    star = Star(turtle=artist, size="large", color="white", height="low", side="left")
+    star.draw()
+    star2 = Star(turtle=artist, size="small", color="white", height="high", side="right")
+    star2.draw()
+    star3 = Star(turtle=artist, size="medium", color="random", height="medium", side="middle")
+    star3.draw()
+    star4 = Star(turtle=artist, size="random", color="random", height="medium", side="middle")
+    star4.draw()
 
+    mercury = Planet(turtle=artist, color="light gray", radius=5, coordinates=(150, 250))
+    mercury.draw()
+    
+    venus = Planet(turtle=artist, color="tan", radius=7, coordinates=(150, 200))
+    venus.draw()
+    
+    earth = Planet(turtle=artist, color="green", radius=15, coordinates=(150,125))
+    earth.draw()
+    
+    mars = Planet(turtle=artist, color="red", radius=10, coordinates=(150, 55))
+    mars.draw()
+    
+    jupiter = Planet(turtle=artist, color="dark orange", radius=30, coordinates=(150, -30))
+    jupiter.draw()
+    
+    saturn = Planet(turtle=artist, color="lemon chiffon", radius=25, coordinates=(150, -100))
+    saturn.draw()
+    
+    uranus = Planet(turtle=artist, color="light blue", radius=10, coordinates=(150, -175))
+    uranus.draw()
+    
+    neptune = Planet(turtle=artist, color="blue", radius=7, coordinates=(150, -250))
+    neptune.draw()
+    
+    pluto = Planet(turtle=artist, color="rosy brown", radius=3, coordinates=(150, -300))
+    pluto.draw()
+
+    #screen.exitonclick()
     input()
 
 if __name__ == "__main__":

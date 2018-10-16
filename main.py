@@ -331,6 +331,7 @@ def demo_mode(turtle):
             star = Star(turtle=turtle, size="random", color="random", height="random", side="random")
             star.draw()
 
+
         #planets
         draw_planets(turtle)
 
@@ -449,6 +450,7 @@ def draw_planets(turtle):
     neptune.draw()
     
     pluto = Planet(turtle=turtle, color="rosy brown", radius=3, coordinates=(-300, 250))
+
     pluto.draw()
 
 #endregion

@@ -6,6 +6,9 @@ import time
 #region global variables
 DRAW_SPEED = 100
 DEFAULT_PEN_SIZE = 1
+DEMO_WAIT_TIME = 10
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 700
 #endregion
 
 #region classes
@@ -120,7 +123,7 @@ class Rocket:
         if inner_color.lower() == "random":
             self.inner_color = random_color()
         else:
-            self.inner_color = random_color()
+            self.inner_color = inner_color
 
     #draws the porthole window
     def draw_porthole(self):
@@ -331,11 +334,10 @@ def demo_mode(turtle):
             star = Star(turtle=turtle, size="random", color="random", height="random", side="random")
             star.draw()
 
-
         #planets
         draw_planets(turtle)
 
-        time.sleep(20)
+        time.sleep(DEMO_WAIT_TIME)
 
 def setup_screen(color, screen_width, screen_height):
     screen = turtle.Screen()
@@ -348,8 +350,8 @@ def random_color():
     #print(random_rgb)
     return random_rgb
 
-def move(t, position, speed=10):
-    #t.speed(speed)
+def move(t, position, speed=5):
+    t.speed(speed)
     t.penup()
     t.setpos(position)
     t.pendown()
@@ -400,27 +402,27 @@ def draw_triangle(t, length_a, length_b, length_c, position, color=None):
     t.forward(length_c)
     t.end_fill()
 
-def draw_crazy_triangles(t, num_of_triangles, speed='Random', pensize='Random', pencolor='Random'):
-    if speed != 'Random':
+def draw_crazy_triangles(t, num_of_triangles, speed='random', pensize='random', pencolor='random'):
+    if speed != 'random':
         t.speed(speed)
-    if pensize != 'Random':
+    if pensize != 'random':
         t.pensize(pensize)
-    if pencolor != 'Random':
+    if pencolor != 'random':
         t.pencolor(pencolor)
     for i in range(num_of_triangles):
         print("{}/{} triangles drawn".format(i+1, num_of_triangles))
-        if pensize == 'Random':
+        if pensize == 'random':
             t.pensize(random.randint(0,10))
-        if pencolor == 'Random':
+        if pencolor == 'random':
             t.pencolor(random_color())
         num_a = float(random.randint(50, 100))
         num_b = float(random.randint(50, 100))
         num_c = float(random.randint(50, 100))
         #max_x, max_y = turtle.screensize()
-        max_x = 300
-        max_y = 300
+        max_x = SCREEN_WIDTH / 2
+        max_y = SCREEN_HEIGHT / 2
         rand_pos = (random.randint((max_x * -1), max_x), random.randint((max_y * -1), max_y))
-        if speed=='Random':
+        if speed=='random':
             t.speed(random.randint(0, 10))
         draw_triangle(t, num_a, num_b, num_c, rand_pos, random_color())
 
@@ -456,12 +458,12 @@ def draw_planets(turtle):
 #endregion
 
 def main():
-    setup_screen(color="black", screen_width=1000, screen_height=700)
+    setup_screen(color="black", screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
 
     artist = turtle.Turtle()
     artist.speed(DRAW_SPEED)
 
-    ground = Ground(turtle=artist, color="dark green", screen_width=1000, screen_height=700, height=225)
+    ground = Ground(turtle=artist, color="dark green", screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT, height=225)
     ground.draw()
 
     print("Hello, this program can program has two modes:")

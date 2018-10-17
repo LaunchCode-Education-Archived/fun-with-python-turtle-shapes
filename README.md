@@ -50,3 +50,6 @@ If you want to run the code on your computer using Python, please follow these i
    - Make them show up on the right side instead of the left
 3. Add a `Moon` class or `draw_moon()` that draws a moon in the sky
 4. Add a `House` class or `draw_house()` that will draw a house on the ground
+
+# Reference Help
+- [Turtle Library Docs](https://docs.python.org/3.0/library/turtle.html)

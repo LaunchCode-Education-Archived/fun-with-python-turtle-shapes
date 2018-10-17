@@ -15,7 +15,7 @@ If you want to run the code on your computer using Python, please follow these i
 1. Clone the repo to your computer (requires that you have `git` installed)
 2. Check if you already have Python 3
    - in terminal run `python -V`
-   - if you see anything starting with 3, then skip to the next section "Running It" 
+   - if you see anything starting with 3, then **skip to the next section** "Running It" 
 3. Install Python 3
    - [Download Miniconda](https://conda.io/miniconda.html) ([read about miniconda here](https://conda.io/miniconda.html))
    - Download the Python 3 installer for your Operating System

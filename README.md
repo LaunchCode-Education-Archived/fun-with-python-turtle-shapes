@@ -1,5 +1,5 @@
 # Summary
-Demonstration program that uses Python 3, the Turtle library, Objects, and functions to draw shapes. 
+Demonstration program that uses Python 3, the [Turtle library](https://docs.python.org/3.0/library/turtle.html), Objects, and functions to draw shapes. 
 The code is a combination of Object Oriented and functions. The `main()` in `main.py` is the starting point for reading the code. 
 
 # Repl.it Version

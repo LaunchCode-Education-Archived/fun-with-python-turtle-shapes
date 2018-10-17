@@ -48,8 +48,12 @@ If you want to run the code on your computer using Python, please follow these i
 2. In the demo program white stars are added to the left part of the screen
    - Change them to be blue
    - Make them show up on the right side instead of the left
-3. Add a `Moon` class or `draw_moon()` that draws a moon in the sky
-4. Add a `House` class or `draw_house()` that will draw a house on the ground
+3. Make the program draw a square on the scene. It can be in any mode
+4. Add a 'draw_square' function
+5. Add a "square" option to create mode which will add a square to the scene
+   - Use the `draw_square` function you created
+6. Add a `Moon` class or `draw_moon()` that draws a moon in the sky
+7. Add a `House` class or `draw_house()` that will draw a house on the ground
 
 # Reference Help
 - [Turtle Library Docs](https://docs.python.org/3.0/library/turtle.html)

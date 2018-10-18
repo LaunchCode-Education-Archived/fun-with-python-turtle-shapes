@@ -43,8 +43,7 @@ If you want to run the code on your computer using Python, please follow these i
     - there is no close feature, you have to kill the program manually
     
 # Possible Tasks/Assignments
-1. Have the program say "Hello, what is your name" and wait for the user to answer.
-   - Program should say "Nice to meet you {USER'S NAME HERE}"
+1. Have the user add their name to the hello message "Hello Janet, this program has two modes."
 2. In the demo program white stars are added to the left part of the screen
    - Change them to be blue
    - Make them show up on the right side instead of the left

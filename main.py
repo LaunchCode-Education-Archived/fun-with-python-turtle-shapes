@@ -297,7 +297,11 @@ def creative_mode(turtle):
         elif choice == "2" or choice.lower() == "rocket":
             draw_rocket_interactive(turtle)
         elif choice == "3" or choice.lower() == "triangle":
-            count = input("Enter how many triangles you want (must be a number): ")
+            answer = input("Enter how many triangles you want (between 1-10): ")
+            count = int(answer)
+            if count > 10 or count < 1:
+                count = 5
+                print("Invalid count, defaulting to 5")
             draw_crazy_triangles(turtle, int(count))
         elif choice == "4" or choice.lower() == "planets":
             draw_planets(turtle)

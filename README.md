@@ -54,6 +54,7 @@ If you want to run the code on your computer using Python, please follow these i
 6. Add a `Moon` class or `draw_moon()` that draws a moon in the sky
 7. Add a `House` class or `draw_house()` that will draw a house on the ground
 8. Add a ring around the planet Saturn
+9. Add a quit option to the main menu and to the create menu
 
 # Reference Help
 - [Turtle Library Docs](https://docs.python.org/3.0/library/turtle.html)
